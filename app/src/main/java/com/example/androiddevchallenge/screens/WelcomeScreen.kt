@@ -1,8 +1,5 @@
 package com.example.androiddevchallenge
 
-import android.os.Bundle
-import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,25 +27,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.androiddevchallenge.component.setStatusBarTransparent
+import androidx.navigation.NavController
+import androidx.navigation.compose.navigate
+import androidx.navigation.compose.rememberNavController
 import com.example.androiddevchallenge.ui.theme.MyTheme
 import com.example.androiddevchallenge.ui.theme.gray900
 import com.example.androiddevchallenge.ui.theme.yellow
 
-class WelcomeActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            MyTheme {
-                setStatusBarTransparent(window = window)
-                WelcomeScreen()
-            }
-        }
-    }
-}
-
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -58,13 +44,13 @@ fun WelcomeScreen() {
 
         LogoImage()
 
-        CtaButton()
+        CtaButton(navController)
 
     }
 }
 
 @Composable
-private fun CtaButton() {
+private fun CtaButton(navController: NavController) {
     Column(modifier = Modifier.fillMaxHeight()) {
         Row(
             horizontalArrangement = Arrangement.SpaceAround,
@@ -90,7 +76,9 @@ private fun CtaButton() {
             Spacer(modifier = Modifier.size(8.dp))
 
             Button(
-                onClick = { },
+                onClick = {
+                    navController.navigate("login")
+                },
                 border = BorderStroke(1.dp, yellow),
                 shape = RoundedCornerShape(18.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -135,7 +123,7 @@ private fun BackgroundImage() {
 @Composable
 fun LightPreview() {
     MyTheme {
-        WelcomeScreen()
+        WelcomeScreen(rememberNavController())
     }
 }
 
@@ -143,6 +131,6 @@ fun LightPreview() {
 @Composable
 fun DarkPreview() {
     MyTheme(darkTheme = true) {
-        WelcomeScreen()
+        WelcomeScreen(rememberNavController())
     }
 }
